@@ -1,7 +1,6 @@
 #include <ctype.h>
 #include <stdio.h>
 
-#define SPAR_LEX_CUE_PTR_TYPES struct spar_text_cue *text;
 #include "core.h"
 #include "text_utils.h"
 

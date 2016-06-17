@@ -32,6 +32,8 @@ union spar_dat {
 	struct spar_parser_batch *batch;
 	/* Useful for functions where pointer type does not matter. */
 	void *generic;
+	/* Same as generic, but more fun to write when setting to NULL. */
+	void *stuff;
 	/* Standard parser stuff, char array strings. */
 	char *text;
 };
@@ -41,6 +43,7 @@ union spar_lex_cue {
 #ifdef SPAR_LEX_CUE_PTR_TYPES
         SPAR_LEX_CUE_PTR_TYPES
 #endif
+	struct spar_text_cue *text;
 	void *generic;
 };
 
@@ -49,16 +52,20 @@ union spar_memory {
 #ifdef SPAR_MEMORY_PTR_TYPES
 	SPAR_MEMORY_PTR_TYPES
 #endif
+	void *stuff;
 	void *generic;
 };
 
 /* Contains the current point in the parsed data and error string. */
 struct spar_lexinfo {
+	/* What we are reading! */
 	union spar_dat dat;
+	/* Holds stuff like line numbers & extra useful stuff. */
 	union spar_lex_cue cue;
 	/* Errors can be not text, especially for representing the mind. */
 	union spar_dat error;
-	/* const char *error; */
+	/* What we want to remember, useful for contex-sensitive parsing. */
+	union spar_memory mem;
 };
 
 /* Contains structure created from parsed data */
@@ -96,8 +103,7 @@ struct spar_parser {
 	/* Function can be a combinator! */
 	enum spar_parsed (*parse)(struct spar_parser *parser,
 				  struct spar_lexinfo *info,
-				  struct spar_token *token,
-				  union spar_memory mem);
+				  struct spar_token *token);
 	const char *str_rep;
 
 	/* Stuff combinators and mods should not touch! */
@@ -111,8 +117,8 @@ struct spar_parser {
 
 /* A convience function so you dont have to write parser->parse(parser, ...) */
 static inline enum spar_parsed
-spar_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-	   struct spar_token *token, union spar_memory mem)
+spar_parse(struct spar_parser *parser,
+	   struct spar_lexinfo *info, struct spar_token *token)
 {
-	return parser->parse(parser, info, token, mem);
+	return parser->parse(parser, info, token);
 }

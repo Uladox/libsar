@@ -29,7 +29,7 @@ install: $(LIB) $(INC)
 uninstall:
 	@echo @ uninstall spar from $(DESTDIR)$(PREFIX)
 	@rm -f $(DESTDIR)$(PREFIX)/lib/$(LIB)
-	@rm -f $(DESTDIR)$(PREFIX)/include/spar/$(INC)
+	@rm -rf $(DESTDIR)$(PREFIX)/include/spar/
 
 clean:
 	rm -f $(LIB) $(OBJ)

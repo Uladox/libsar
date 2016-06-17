@@ -9,7 +9,6 @@ int main(int argc, char *argv[])
 {
 	struct spar_token token;
 	enum spar_parsed parsed;
-	union spar_memory mem;
 
 	char *buff = NULL;
 	size_t size = 0;
@@ -21,10 +20,11 @@ int main(int argc, char *argv[])
 
 	struct spar_lexinfo info = {
 		.dat.text = buff,
-		.error = NULL
+		.error = NULL,
+		.mem.stuff = NULL
 	};
 
-	parsed = spar_parse(&spar_word_parser, &info, &token, mem);
+	parsed = spar_parse(&spar_word_parser, &info, &token);
 
 	if (parsed == SPAR_ERROR) {
 		printf("Error: %s.\n", info.error.text);

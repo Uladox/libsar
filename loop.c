@@ -6,12 +6,12 @@ const char spar_type_loop[] = "loop";
 
 enum spar_parsed
 spar_loop_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-		struct spar_token *token, union spar_memory mem)
+		struct spar_token *token)
 {
 	enum spar_parsed parsed;
 
 	do {
-		parsed = spar_parse(parser, info, token, mem);
+		parsed = spar_parse(parser, info, token);
 	} while (parsed == SPAR_OK);
 
 	return parsed;
@@ -20,13 +20,13 @@ spar_loop_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 
 enum spar_parsed
 spar_mod_loop_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		   struct spar_token *token, union spar_memory mem)
+		   struct spar_token *token)
 {
 	enum spar_parsed parsed;
 
 	while ((parsed = spar_parse(parser->dat.loop.parser,
-				    info, token, mem)) == SPAR_OK) {
-		switch (spar_parse(parser->dat.loop.check, info, token, mem)) {
+				    info, token)) == SPAR_OK) {
+		switch (spar_parse(parser->dat.loop.check, info, token)) {
 		case SPAR_OK:
 			continue;
 		case SPAR_END:

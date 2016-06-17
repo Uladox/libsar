@@ -1,14 +1,12 @@
 #include <stddef.h>
 
-#define SPAR_LEX_CUE_PTR_TYPES struct spar_text_cue *text;
-
 #include "core.h"
 #include "text_utils.h"
 #include "strlit_parser.h"
 
 static enum spar_parsed
 parse_strlit(struct spar_parser *parser, struct spar_lexinfo *info,
-	     struct spar_token *token, union spar_memory mem);
+	     struct spar_token *token);
 
 const char spar_type_strlit[] = "strlit";
 
@@ -22,14 +20,13 @@ struct spar_parser spar_strlit_parser = {
 
 static enum spar_parsed
 parse_strlit(struct spar_parser *parser, struct spar_lexinfo *info,
-	     struct spar_token *token, union spar_memory mem)
+	     struct spar_token *token)
 {
 	int backslashed = 0;
 	size_t line = 0;
 	char *curr = info->dat.text;
 
 	(void) parser;
-	(void) mem;
 
 	/* 1 is for null termination */
 	token->data_size = 1;

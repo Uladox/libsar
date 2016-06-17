@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define SPAR_LEX_CUE_PTR_TYPES struct spar_text_cue *text;
 #include "../core.h"
 #include "../meta.h"
 #include "../text_utils.h"
@@ -12,7 +11,7 @@
 
 enum spar_parsed
 str_word_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-	       struct spar_token *token, union spar_memory mem)
+	       struct spar_token *token)
 {
 	token->type = spar_type_parser;
 
@@ -31,7 +30,6 @@ int main(int argc, char *argv[])
 	struct spar_token token;
 	struct spar_text_cue text_cue;
 	enum spar_parsed parsed;
-	union spar_memory mem;
 
 	char *buff = NULL;
 	size_t size = 0;
@@ -47,7 +45,7 @@ int main(int argc, char *argv[])
 		.cue.text = &text_cue
 	};
 
-	parsed = spar_parse(&word_str_parser, &info, &token, mem);
+	parsed = spar_parse(&word_str_parser, &info, &token);
 
 	if (parsed == SPAR_ERROR) {
 		printf("Error: neither a word or a string.\n");

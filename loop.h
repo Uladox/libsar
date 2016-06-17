@@ -28,11 +28,11 @@ extern const char spar_type_loop[];
  */
 enum spar_parsed
 spar_loop_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-		struct spar_token *token, union spar_memory mem);
+		struct spar_token *token);
 
 enum spar_parsed
 spar_mod_loop_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		   struct spar_token *token, union spar_memory mem);
+		   struct spar_token *token);
 
 void
 spar_mod_loop(struct spar_parser *to_mod, struct spar_parser *input);

@@ -35,14 +35,14 @@ spar_comb_add(struct spar_parser *comb, struct spar_parser_batch *batch);
 
 enum spar_parsed
 spar_comb_first_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		     struct spar_token *token, union spar_memory mem);
+		     struct spar_token *token);
 
 void
 spar_comb_first(struct spar_parser *comb);
 
 enum spar_parsed
 spar_comb_all_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		   struct spar_token *token, union spar_memory mem);
+		   struct spar_token *token);
 
 void
 spar_comb_all(struct spar_parser *comb);

@@ -1,14 +1,13 @@
 #include <ctype.h>
 #include <stddef.h>
 
-#define SPAR_LEX_CUE_PTR_TYPES struct spar_text_cue *text;
 #include "core.h"
 #include "text_utils.h"
 #include "word_parser.h"
 
 static enum spar_parsed
 parse_word(struct spar_parser *parser, struct spar_lexinfo *info,
-	   struct spar_token *token, union spar_memory mem);
+	   struct spar_token *token);
 
 const char spar_type_word[] = "word";
 
@@ -22,13 +21,11 @@ struct spar_parser spar_word_parser = {
 
 static enum spar_parsed
 parse_word(struct spar_parser *parser, struct spar_lexinfo *info,
-	   struct spar_token *token, union spar_memory mem)
+	   struct spar_token *token)
 {
 	enum spar_parsed parsed;
 
 	(void) parser;
-	(void) mem;
-
 
 	token->dat.text = info->dat.text;
 	token->data_size = SPAR_UNKNOWN_SIZE;
