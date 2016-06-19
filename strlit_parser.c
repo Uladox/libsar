@@ -10,13 +10,7 @@ parse_strlit(struct spar_parser *parser, struct spar_lexinfo *info,
 
 const char spar_type_strlit[] = "strlit";
 
-struct spar_parser spar_strlit_parser = {
-	.type = SPAR_PRIMATIVE,
-	.to_free = SPAR_DONT_FREE,
-	.parse = parse_strlit,
-	.str_rep = "parse_strlit"
-};
-
+SPAR_PARSER_INIT(spar_strlit_parser, "parse_strlit", parse_strlit, NULL);
 
 static enum spar_parsed
 parse_strlit(struct spar_parser *parser, struct spar_lexinfo *info,

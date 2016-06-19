@@ -11,13 +11,7 @@ parse_word(struct spar_parser *parser, struct spar_lexinfo *info,
 
 const char spar_type_word[] = "word";
 
-struct spar_parser spar_word_parser = {
-	.type = SPAR_PRIMATIVE,
-	.to_free = SPAR_DONT_FREE,
-	.parse = parse_word,
-	.str_rep = "parse_word"
-};
-
+SPAR_PARSER_INIT(spar_word_parser, "parse_word", parse_word, NULL);
 
 static enum spar_parsed
 parse_word(struct spar_parser *parser, struct spar_lexinfo *info,
@@ -28,7 +22,6 @@ parse_word(struct spar_parser *parser, struct spar_lexinfo *info,
 	(void) parser;
 
 	token->dat.text = info->dat.text;
-	token->data_size = SPAR_UNKNOWN_SIZE;
 	token->type = spar_type_word;
 
 	if (isspace(*info->dat.text) || *info->dat.text == '\0' ||

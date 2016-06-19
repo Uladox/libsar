@@ -2,14 +2,14 @@
 
 include config.mk
 
-SRC = word_parser.c strlit_parser.c text_utils.c meta.c comb.c
+SRC = word_parser.c strlit_parser.c num_parser.c text_utils.c meta.c comb.c
 OBJ = $(SRC:.c=.o)
 
 LIB = libspar.a
 #comb.h  core.h  loop.h  strlit_parser.h  text_utils.h  token_print.h  word_parser.h
 
 INC = core.h text_utils.h token_print.h word_parser.h strlit_parser.h meta.h \
-      comb.h loop.h
+      comb.h loop.h num_parser.h
 
 all: $(LIB)
 
@@ -32,4 +32,4 @@ uninstall:
 	@rm -rf $(DESTDIR)$(PREFIX)/include/spar/
 
 clean:
-	rm -f $(LIB) $(OBJ)
+	@rm -f $(LIB) $(OBJ)

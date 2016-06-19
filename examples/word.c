@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
 
 	printf("Enter your word here: ");
 
-	len = getline(&buff, &size, stdin);
+	/* len = getline(&buff, &size, stdin); */
 
 	struct spar_lexinfo info = {
-		.dat.text = buff,
+		.dat.text = "word",
 		.error = NULL,
 		.mem.stuff = NULL
 	};

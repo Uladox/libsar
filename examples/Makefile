@@ -1,30 +1,22 @@
+SRC = word.c strlit.c comb_first.c meta_test.c
+OBJ = $(SRC:.c=.o)
+
+# Stops make from acting stupid
+.SUFFIXES:
+.PRECIOUS: %.o
+.PHONY: all clean
+
 all: word strlit comb_first meta_test
 
-word: word.o ../libspar.a
-	gcc -g -o word word.o ../libspar.a
+%.o: %.c
+	@gcc -g -c $<
 
-word.o: word.c
-	gcc -g -c word.c
-
-strlit: strlit.o ../libspar.a
-	gcc -g -o strlit strlit.o ../libspar.a
-
-strlit.o: strlit.c
-	gcc -g -c strlit.c
-
-comb_first: comb_first.o ../libspar.a
-	gcc -g -o comb_first comb_first.o ../libspar.a
-
-comb_first.o: comb_first.c
-	gcc -g -c comb_first.c
-
-meta_test: meta_test.o ../libspar.a
-	gcc -g -o meta_test meta_test.o ../libspar.a
-
-meta_test.o: meta_test.c
-	gcc -g -c meta_test.c
+%: %.o ../libspar.a
+	@gcc -g -o $@ $^ 
 
 ../libspar.a:
-	(cd .. && make)
+	@(cd .. && make)
+
 clean:
-	rm -f *.o word strlit comb_first meta_test
+	@rm -f *.o word strlit comb_first meta_test
+

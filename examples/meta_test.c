@@ -23,6 +23,7 @@ str_word_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 
 
 SPAR_PARSER_INIT(word_str_basic, "word_str_basic", str_word_parse, NULL);
+
 SPAR_MOD_INIT_META(word_str_parser, &word_str_basic);
 
 int main(int argc, char *argv[])
@@ -31,20 +32,18 @@ int main(int argc, char *argv[])
 	struct spar_text_cue text_cue;
 	enum spar_parsed parsed;
 
-	char *buff = NULL;
-	size_t size = 0;
-	ssize_t len;
-
-	printf("Enter your string or word here: ");
-
-	len = getline(&buff, &size, stdin);
-
 	struct spar_lexinfo info = {
-		.dat.text = buff,
 		.error = NULL,
 		.cue.text = &text_cue
 	};
 
+	char *buff = NULL;
+	size_t size = 0;
+
+	printf("Enter your string or word here: ");
+        getline(&buff, &size, stdin);
+
+	info.dat.text = buff;
 	parsed = spar_parse(&word_str_parser, &info, &token);
 
 	if (parsed == SPAR_ERROR) {
