@@ -3,6 +3,6 @@
  * #include "core.h"
  */
 
-const char spar_type_whole[];
-const char spar_type_decimal[];
+extern const char spar_type_whole[];
+extern const char spar_type_decimal[];
 extern struct spar_parser spar_num_parser;

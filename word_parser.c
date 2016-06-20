@@ -2,6 +2,7 @@
 #include <stddef.h>
 
 #include "core.h"
+#include "cases.h"
 #include "text_utils.h"
 #include "word_parser.h"
 
@@ -18,28 +19,22 @@ parse_word(struct spar_parser *parser, struct spar_lexinfo *info,
 	   struct spar_token *token)
 {
 	enum spar_parsed parsed;
+        char *curr = info->dat.text;
 
 	(void) parser;
 
-	token->dat.text = info->dat.text;
+	token->dat.text = curr;
 	token->type = spar_type_word;
 
-	if (isspace(*info->dat.text) || *info->dat.text == '\0' ||
-	    *info->dat.text == ';') {
-		info->error.text = "word does not start with valid character";
-		info->cue.text->error_line = info->cue.text->lines;
+	if (isspace(*curr) || *curr == '\0' || *curr == ';') {
+		spar_text_error(info, "word has invalid first character", 0);
+		token->len = SPAR_UNKNOWN_SIZE;
 		return SPAR_ERROR;
 	}
 
 	while (1) {
-		switch (*++info->dat.text) {
-		case '\n':
-		case ' ':
-		case '\t':
-		case '\v':
-		case '\f':
-		case '\r':
-		case ';':
+		switch (*++curr) {
+		SPAR_SEP_CASES:
 			parsed = SPAR_OK;
 			goto out;
 		case '\0':
@@ -48,6 +43,6 @@ parse_word(struct spar_parser *parser, struct spar_lexinfo *info,
 		}
 	}
 out:
-	token->len = info->dat.text - token->dat.text;
+	token->len = curr - token->dat.text;
 	return parsed;
 }

@@ -2,9 +2,9 @@
  * #include <stdlib.h> or <stddef.h>
  */
 
+#define SPAR_UNKNOWN_SIZE 0
 #define SPAR_SIZE_UNKNOWN(SIZE)			\
-	((SIZE) < 0)
-#define SPAR_UNKNOWN_SIZE -1
+	(!(SIZE))
 
 #define SPAR_PARSER_INIT(NAME, STR_REP, PARSE, DAT)		\
 	struct spar_parser NAME = {				\
@@ -62,10 +62,12 @@ struct spar_lexinfo {
 	union spar_dat dat;
 	/* Holds stuff like line numbers & extra useful stuff. */
 	union spar_lex_cue cue;
-	/* Errors can be not text, especially for representing the mind. */
-	union spar_dat error;
 	/* What we want to remember, useful for contex-sensitive parsing. */
 	union spar_memory mem;
+	/* Errors can be not text, especially for representing the mind. */
+	union spar_dat error;
+	/* If we should continue parsing on error, if reasonable. */
+	int error_leave;
 };
 
 /* Contains structure created from parsed data */

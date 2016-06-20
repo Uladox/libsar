@@ -29,12 +29,15 @@ SPAR_MOD_INIT_META(word_str_parser, &word_str_basic);
 int main(int argc, char *argv[])
 {
 	struct spar_token token;
-	struct spar_text_cue text_cue;
+	struct spar_text_cue text_cue = {
+		.lines = 0
+	};
 	enum spar_parsed parsed;
 
 	struct spar_lexinfo info = {
 		.error = NULL,
-		.cue.text = &text_cue
+		.cue.text = &text_cue,
+		.error_leave = 1,
 	};
 
 	char *buff = NULL;

@@ -16,6 +16,7 @@ static enum spar_parsed
 parse_strlit(struct spar_parser *parser, struct spar_lexinfo *info,
 	     struct spar_token *token)
 {
+	enum spar_parsed parsed = SPAR_OK;
 	int backslashed = 0;
 	size_t line = 0;
 	char *curr = info->dat.text;
@@ -28,20 +29,31 @@ parse_strlit(struct spar_parser *parser, struct spar_lexinfo *info,
 	token->type = spar_type_strlit;
 
 	if (*curr != '\"') {
-		info->error.text = "string has no start quote";
-		info->cue.text->error_line = info->cue.text->lines;
-		return SPAR_ERROR;
+		spar_text_error(info, "string has no start quote", 0);
+
+		if (info->error_leave || *curr == '\0') {
+			token->len = SPAR_UNKNOWN_SIZE;
+			return SPAR_ERROR;
+		}
+
+		parsed = SPAR_ERROR;
 	}
 
 	while (1) {
 		switch (*++curr) {
 		case '\0':
-			info->error.text = "string has no ending quote";
-			info->cue.text->error_line = info->cue.text->lines + line;
-			return SPAR_ERROR;
+			spar_text_error(info, "string has no ending quote",
+					line);
+
+			if (info->error_leave)
+				return SPAR_ERROR;
+
+			parsed = SPAR_ERROR;
+			goto out;
 		case '\\':
 			if (backslashed)
 				++token->data_size;
+
 		        backslashed = !backslashed;
 			break;
 		case '\"':
@@ -63,7 +75,6 @@ parse_strlit(struct spar_parser *parser, struct spar_lexinfo *info,
 	}
 out:
 	token->len = curr - token->dat.text;
-	info->dat.text = curr;
 	info->cue.text->lines += line;
-	return SPAR_OK;
+	return parsed;
 }

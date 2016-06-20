@@ -24,7 +24,9 @@ SPAR_COMB_INIT_FIRST(word_str_parser, &word_str_batch);
 int main(int argc, char *argv[])
 {
 	struct spar_token token;
-	struct spar_text_cue text_cue;
+	struct spar_text_cue text_cue = {
+		.lines = 0
+	};
 	enum spar_parsed parsed;
 
 	char *buff = NULL;
@@ -37,9 +39,8 @@ int main(int argc, char *argv[])
 
 	struct spar_lexinfo info = {
 		.dat.text = buff,
-		.error = NULL,
 		.cue.text = &text_cue,
-		.mem.stuff = NULL
+		.error_leave = 1,
 	};
 
 	parsed = spar_parse(&word_str_parser,

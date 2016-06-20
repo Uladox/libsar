@@ -7,7 +7,7 @@ const char spar_type_meta[] = "meta";
 
 enum spar_parsed
 spar_meta_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-		  struct spar_token *token)
+		struct spar_token *token)
 {
 	enum spar_parsed parsed = spar_parse(parser, info, token);
 
