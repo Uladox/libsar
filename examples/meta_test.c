@@ -13,7 +13,7 @@ enum spar_parsed
 str_word_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 	       struct spar_token *token)
 {
-	token->type = spar_type_parser;
+	token->type.text = spar_type_parser;
 
 	token->dat.parser = (*info->dat.text == '\"')
 		? &spar_strlit_parser : &spar_word_parser;
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	} else {
 		printf("parsed \n\t");
 		spar_print_text_token(&token);
-		printf("\nwith type %s.\n", token.type);
+		printf("\nwith type %s.\n", token.type.text);
 	}
 
 	free(buff);

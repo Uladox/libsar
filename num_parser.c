@@ -26,7 +26,7 @@ parse_num(struct spar_parser *parser, struct spar_lexinfo *info,
 	(void) parser;
 
 	token->dat.text = curr;
-	token->type = spar_type_whole;
+	token->type.text = spar_type_whole;
 
 	if (!isdigit(*curr)) {
 		info->error.text = "number does not start with digit";
@@ -46,7 +46,7 @@ parse_num(struct spar_parser *parser, struct spar_lexinfo *info,
 				parsed = SPAR_END;
 			goto out;
 		case '.':
-			token->type = spar_type_decimal;
+			token->type.text = spar_type_decimal;
 			if (!period) {
 				period = 1;
 				break;

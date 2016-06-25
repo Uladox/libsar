@@ -11,7 +11,7 @@ spar_meta_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 {
 	enum spar_parsed parsed = spar_parse(parser, info, token);
 
-	if (parsed != SPAR_ERROR && token->type == spar_type_parser)
+	if (parsed != SPAR_ERROR && token->type.text == spar_type_parser)
 		return spar_parse(token->dat.parser, info, token);
 
 	return parsed;
@@ -24,7 +24,7 @@ spar_mod_meta_func(struct spar_parser *parser, struct spar_lexinfo *info,
 {
 	enum spar_parsed parsed = spar_parse(parser->dat.parser, info, token);
 
-	if (parsed != SPAR_ERROR && token->type == spar_type_parser)
+	if (parsed != SPAR_ERROR && token->type.text == spar_type_parser)
 		return spar_parse(token->dat.parser, info, token);
 
 	return parsed;

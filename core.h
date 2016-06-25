@@ -6,6 +6,11 @@
 #define SPAR_SIZE_UNKNOWN(SIZE)			\
 	(!(SIZE))
 
+#define SPAR_PARSE_FUNC(NAME)						\
+        enum spar_parsed						\
+	NAME(struct spar_parser *parser, struct spar_lexinfo *info,	\
+	     struct spar_token *token)
+
 #define SPAR_PARSER_INIT(NAME, STR_REP, PARSE, DAT)		\
 	struct spar_parser NAME = {				\
 		.dat.generic = DAT,				\
@@ -47,6 +52,15 @@ union spar_lex_cue {
 	void *generic;
 };
 
+union spar_token_type {
+#ifdef SPAR_TOEKEN_TYPE_PTR_TYPES
+        SPAR_TOEKEN_TYPE_PTR_TYPES
+#endif
+	const int *enum_ptr;
+	const char *text;
+	const void *generic;
+};
+
 union spar_memory {
 	/* Used to hold memory between parsers. */
 #ifdef SPAR_MEMORY_PTR_TYPES
@@ -73,7 +87,7 @@ struct spar_lexinfo {
 /* Contains structure created from parsed data */
 struct spar_token {
 	union spar_dat dat;
-	const char *type;
+	union spar_token_type type;
 	size_t data_size;
 	size_t len;
 };

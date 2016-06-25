@@ -33,6 +33,6 @@ spar_mod_meta(struct spar_parser *to_mod, struct spar_parser *input);
 void
 spar_token_set_parser(struct spar_token *token, struct spar_parser *parser)
 {
-		token->type = spar_type_parser;
+		token->type.text = spar_type_parser;
 		token->dat.parser = parser;
 }
