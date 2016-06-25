@@ -1,6 +1,6 @@
 /* Include these
  * #include <stdlib.h> or <stddef.h>
- * #include "core.h"
+ * #include "../core.h"
  */
 
 extern const char spar_type_whole[];

@@ -4,11 +4,13 @@
  * #include "text_utils.h"
  */
 
-#define SPAR_BODY_CUSSTRLIT(TYPE, FAIL_LEN)				\
+#define SPAR_BODY_CUSSTRLIT_0(TYPE, FAIL_LEN)				\
 	enum spar_parsed parsed = SPAR_OK;				\
 	int backslashed = 0;						\
 	size_t line = 0;						\
 	char *curr = info->dat.text;					\
+									\
+	(void) parser;							\
 									\
 	token->data_size = 1;						\
 	token->dat.text = curr;						\
@@ -61,4 +63,9 @@
 			break;						\
 		}							\
 	}								\
-	(void) parser
+
+#define SPAR_BODY_CUSSTRLIT(TYPE, FAIL_LEN)			\
+	SPAR_INSULATE(SPAR_BODY_CUSSTRLIT_0(TYPE, FAIL_LEN))
+
+enum spar_parsed
+spar_strlit_str(struct spar_token *token, char **str_ref);

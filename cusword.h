@@ -1,11 +1,13 @@
 /* Include these
- * #include <stddef.h>
+ * #include <stdlib.h> or <stddef.h>
  * #include "core.h"
  * #include "text_utils.h"
  */
 
-#define SPAR_BODY_CUSWORD(TYPE, END_CASES, DAT_SIZE, FAIL_LEN)		\
+#define SPAR_BODY_CUSWORD_0(TYPE, DAT_SIZE, END_CASES, FAIL_LEN)	\
         char *curr = info->dat.text;					\
+									\
+	(void) parser;							\
 									\
 	token->dat.text = curr;						\
 	token->type.generic = TYPE;					\
@@ -30,6 +32,8 @@
 			return SPAR_END;				\
 		}							\
 	}								\
-	(void) parser
 
+#define SPAR_BODY_CUSWORD(TYPE, DAT_SIZE, END_CASES, FAIL_LEN)		\
+	SPAR_INSULATE(SPAR_BODY_CUSWORD_0(TYPE, DAT_SIZE,		\
+					  END_CASES, FAIL_LEN))
 

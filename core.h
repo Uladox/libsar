@@ -6,6 +6,9 @@
 #define SPAR_SIZE_UNKNOWN(SIZE)			\
 	(!(SIZE))
 
+#define SPAR_INSULATE(STUFF)			\
+	do { STUFF } while (0)
+
 #define SPAR_PARSE_FUNC(NAME)						\
         enum spar_parsed						\
 	NAME(struct spar_parser *parser, struct spar_lexinfo *info,	\
