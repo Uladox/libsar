@@ -8,7 +8,7 @@
 #define SPAR_BODY_CUSNUM_0(WHOLE_TYPE, WHOLE_SIZE,			\
 			   DECIMAL_TYPE, DECIMAL_SIZE,			\
 			   END_CASES, FAIL_LEN)				\
-	enum spar_parsed parsed = SPAR_OK;				\
+	int parsed = 1;							\
 	char *curr = info->dat.text;					\
 	int period = 0;							\
 									\
@@ -25,7 +25,7 @@
 		spar_text_error(info,					\
 				"number does not start with digit", 0);	\
 		token->len = FAIL_LEN;					\
-		return SPAR_ERROR;					\
+		return 0;						\
 	}								\
 									\
 	for (;; ++curr) {						\
@@ -33,10 +33,7 @@
 		SPAR_DIGIT_CASES:					\
 			continue;					\
 		END_CASES:						\
-			goto out;					\
 		case '\0':						\
-			if (parsed == SPAR_OK)				\
-				parsed = SPAR_END;			\
 			goto out;					\
 		case '.':						\
 			token->type.generic = DECIMAL_TYPE;		\
@@ -45,15 +42,16 @@
 				period = 1;				\
 				break;					\
 			}						\
-			info->error.text = "too many decimal points in number"; \
+			info->error.text =				\
+				"too many decimal points in number";	\
 		        goto error;					\
 		default:						\
 			info->error.text = "invalid character in number"; \
 		error:							\
 			info->cue.text->error_line = info->cue.text->lines;	\
 			if (info->error_leave)				\
-				return SPAR_ERROR;			\
-			parsed = SPAR_ERROR;				\
+				return 0;				\
+			parsed = 0;					\
 			break;						\
 		out:							\
 			token->len = curr - token->dat.text;		\

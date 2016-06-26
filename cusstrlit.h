@@ -5,7 +5,7 @@
  */
 
 #define SPAR_BODY_CUSSTRLIT_0(TYPE, FAIL_LEN)				\
-	enum spar_parsed parsed = SPAR_OK;				\
+	int parsed = 1;							\
 	int backslashed = 0;						\
 	size_t line = 0;						\
 	char *curr = info->dat.text;					\
@@ -21,10 +21,10 @@
 									\
 		if (info->error_leave || *curr == '\0') {		\
 			token->len = FAIL_LEN;				\
-			return SPAR_ERROR;				\
+			return 0;					\
 		}							\
 									\
-		parsed = SPAR_ERROR;					\
+		parsed = 0;						\
 	}								\
 									\
 	while (1) {							\
@@ -36,7 +36,7 @@
 									\
 			token->len = curr - token->dat.text;		\
 			info->cue.text->lines += line;			\
-			return SPAR_ERROR;				\
+			return 0;					\
 		case '\\':						\
 			if (backslashed)				\
 				++token->data_size;			\
@@ -67,5 +67,5 @@
 #define SPAR_BODY_CUSSTRLIT(TYPE, FAIL_LEN)			\
 	SPAR_INSULATE(SPAR_BODY_CUSSTRLIT_0(TYPE, FAIL_LEN))
 
-enum spar_parsed
+int
 spar_strlit_str(struct spar_token *token, char **str_ref);

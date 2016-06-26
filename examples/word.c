@@ -3,13 +3,13 @@
 
 #include "../core.h"
 #include "../text_utils.h"
-#include "../word_parser.h"
 #include "../token_print.h"
+#include "../parsers/word_parser.h"
 
 int main(int argc, char *argv[])
 {
 	struct spar_token token;
-	enum spar_parsed parsed;
+	int parsed;
 	struct spar_text_cue text_cue = {
 		.lines = 0
 	};
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
 	parsed = spar_parse(&spar_word_parser, &info, &token);
 
-	if (parsed == SPAR_ERROR) {
+	if (!parsed) {
 		printf("Error: %s.\n", info.error.text);
 	} else {
 		spar_print_text_token(&token);

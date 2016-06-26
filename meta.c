@@ -5,26 +5,26 @@
 const char spar_type_parser[] = "parser";
 const char spar_type_meta[] = "meta";
 
-enum spar_parsed
+int
 spar_meta_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 		struct spar_token *token)
 {
-	enum spar_parsed parsed = spar_parse(parser, info, token);
+	int parsed = spar_parse(parser, info, token);
 
-	if (parsed != SPAR_ERROR && token->type.text == spar_type_parser)
+	if (parsed && token->type.text == spar_type_parser)
 		return spar_parse(token->dat.parser, info, token);
 
 	return parsed;
 }
 
 
-enum spar_parsed
+int
 spar_mod_meta_func(struct spar_parser *parser, struct spar_lexinfo *info,
 		   struct spar_token *token)
 {
-	enum spar_parsed parsed = spar_parse(parser->dat.parser, info, token);
+	int parsed = spar_parse(parser->dat.parser, info, token);
 
-	if (parsed != SPAR_ERROR && token->type.text == spar_type_parser)
+	if (parsed && token->type.text == spar_type_parser)
 		return spar_parse(token->dat.parser, info, token);
 
 	return parsed;

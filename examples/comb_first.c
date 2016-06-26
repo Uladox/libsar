@@ -4,10 +4,9 @@
 #include "../core.h"
 #include "../comb.h"
 #include "../text_utils.h"
-#include "../strlit_parser.h"
-#include "../word_parser.h"
 #include "../token_print.h"
-
+#include "../parsers/word_parser.h"
+#include "../parsers/strlit_parser.h"
 
 
 struct spar_parser_batch word_str_batch = {
@@ -27,7 +26,7 @@ int main(int argc, char *argv[])
 	struct spar_text_cue text_cue = {
 		.lines = 0
 	};
-	enum spar_parsed parsed;
+	int parsed;
 
 	char *buff = NULL;
 	size_t size = 0;
@@ -46,7 +45,7 @@ int main(int argc, char *argv[])
 	parsed = spar_parse(&word_str_parser,
 			    &info, &token);
 
-	if (parsed == SPAR_ERROR) {
+	if (!parsed) {
 		printf("Error: neither a word or a string.\n");
 	} else {
 		printf("parsed \n\t");

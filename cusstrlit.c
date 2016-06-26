@@ -19,7 +19,7 @@ backslash_curr(char curr)
 
 }
 
-enum spar_parsed
+int
 spar_strlit_str(struct spar_token *token, char **str_ref)
 {
 	int backslashed = 0;
@@ -72,10 +72,10 @@ spar_strlit_str(struct spar_token *token, char **str_ref)
 error:
 	free(begin);
 	*str_ref = NULL;
-	return SPAR_ERROR;
+	return 0;
 out:
 	*str = '\0';
 	*str_ref = begin;
-	return SPAR_OK;
+	return 1;
 
 }

@@ -10,7 +10,7 @@
 	do { STUFF } while (0)
 
 #define SPAR_PARSE_FUNC(NAME)						\
-        enum spar_parsed						\
+        int						\
 	NAME(struct spar_parser *parser, struct spar_lexinfo *info,	\
 	     struct spar_token *token)
 
@@ -81,10 +81,10 @@ struct spar_lexinfo {
 	union spar_lex_cue cue;
 	/* What we want to remember, useful for contex-sensitive parsing. */
 	union spar_memory mem;
-	/* Errors can be not text, especially for representing the mind. */
-	union spar_dat error;
 	/* If we should continue parsing on error, if reasonable. */
 	int error_leave;
+	/* Errors can be not text, especially for representing the mind. */
+	union spar_dat error;
 };
 
 /* Contains structure created from parsed data */
@@ -93,14 +93,6 @@ struct spar_token {
 	union spar_token_type type;
 	size_t data_size;
 	size_t len;
-};
-
-/* Enums for parser information */
-/* If we are successful, are at the end, or have an error. */
-enum spar_parsed {
-	SPAR_OK,
-	SPAR_END,
-	SPAR_ERROR
 };
 
 /* If the parser is hard coded or made of smaller parsers. */
@@ -120,9 +112,9 @@ enum spar_parser_free {
 struct spar_parser {
 	union spar_dat dat;
 	/* Function can be a combinator! */
-	enum spar_parsed (*parse)(struct spar_parser *parser,
-				  struct spar_lexinfo *info,
-				  struct spar_token *token);
+	int (*parse)(struct spar_parser *parser,
+		     struct spar_lexinfo *info,
+		     struct spar_token *token);
 	const char *str_rep;
 
 	/* Stuff combinators and mods should not touch! */
@@ -135,7 +127,7 @@ struct spar_parser {
 };
 
 /* A convience function so you dont have to write parser->parse(parser, ...) */
-static inline enum spar_parsed
+static inline int
 spar_parse(struct spar_parser *parser,
 	   struct spar_lexinfo *info, struct spar_token *token)
 {

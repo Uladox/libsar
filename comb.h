@@ -33,14 +33,14 @@ struct spar_parser_batch {
 void
 spar_comb_add(struct spar_parser *comb, struct spar_parser_batch *batch);
 
-enum spar_parsed
+int
 spar_comb_first_func(struct spar_parser *parser, struct spar_lexinfo *info,
 		     struct spar_token *token);
 
 void
 spar_comb_first(struct spar_parser *comb);
 
-enum spar_parsed
+int
 spar_comb_all_func(struct spar_parser *parser, struct spar_lexinfo *info,
 		   struct spar_token *token);
 

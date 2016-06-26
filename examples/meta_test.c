@@ -4,12 +4,11 @@
 #include "../core.h"
 #include "../meta.h"
 #include "../text_utils.h"
-#include "../strlit_parser.h"
-#include "../word_parser.h"
 #include "../token_print.h"
+#include "../parsers/strlit_parser.h"
+#include "../parsers/word_parser.h"
 
-
-enum spar_parsed
+int
 str_word_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 	       struct spar_token *token)
 {
@@ -18,7 +17,7 @@ str_word_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 	token->dat.parser = (*info->dat.text == '\"')
 		? &spar_strlit_parser : &spar_word_parser;
 
-	return SPAR_OK;
+	return 1;
 }
 
 
@@ -32,7 +31,7 @@ int main(int argc, char *argv[])
 	struct spar_text_cue text_cue = {
 		.lines = 0
 	};
-	enum spar_parsed parsed;
+	int parsed;
 
 	struct spar_lexinfo info = {
 		.error = NULL,
@@ -49,7 +48,7 @@ int main(int argc, char *argv[])
 	info.dat.text = buff;
 	parsed = spar_parse(&word_str_parser, &info, &token);
 
-	if (parsed == SPAR_ERROR) {
+	if (!parsed) {
 		printf("Error: neither a word or a string.\n");
 	} else {
 		printf("parsed \n\t");

@@ -19,11 +19,11 @@ extern const char spar_type_meta[];
  * More useful than you would think in conjunction with a switch statement
  * or jump table.
  */
-enum spar_parsed
+int
 spar_meta_parse(struct spar_parser *parser, struct spar_lexinfo *info,
 		struct spar_token *token);
 
-enum spar_parsed
+int
 spar_mod_meta_func(struct spar_parser *parser, struct spar_lexinfo *info,
 		   struct spar_token *token);
 

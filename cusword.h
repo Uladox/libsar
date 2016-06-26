@@ -19,17 +19,15 @@
 		spar_text_error(info,					\
 				"word has invalid first character", 0);	\
 		token->len = FAIL_LEN;					\
-		return SPAR_ERROR;					\
+		return 0;						\
 	}								\
 									\
 	while (1) {							\
 		switch (*++curr) {					\
 		END_CASES:						\
-			token->len = curr - token->dat.text;		\
-			return SPAR_OK;					\
 		case '\0':						\
 			token->len = curr - token->dat.text;		\
-			return SPAR_END;				\
+			return 1;					\
 		}							\
 	}								\
 
