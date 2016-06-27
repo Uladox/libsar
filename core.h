@@ -10,7 +10,7 @@
 	do { STUFF } while (0)
 
 #define SPAR_PARSE_FUNC(NAME)						\
-        int						\
+        int								\
 	NAME(struct spar_parser *parser, struct spar_lexinfo *info,	\
 	     struct spar_token *token)
 
@@ -21,6 +21,19 @@
 		.str_rep = STR_REP,				\
 		.type = SPAR_PRIMATIVE,				\
 		.to_free = SPAR_DONT_FREE			\
+	}
+
+#define SPAR_LEXINFO_INIT(NAME, ERROR_LEAVE, CUE, MEM, DAT)		\
+	struct spar_lexinfo NAME = {					\
+		.dat.generic = DAT,					\
+		.cue.generic = CUE,					\
+		.mem.generic = MEM,					\
+		.error_leave = ERROR_LEAVE				\
+	}
+
+#define SPAR_TOKEN_INIT(NAME, START_TYPE)	\
+	struct spar_token NAME = {		\
+		.type.generic = START_TYPE	\
 	}
 
 union spar_dat {

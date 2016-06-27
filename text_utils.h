@@ -3,6 +3,11 @@
  * #include "core.h"
  */
 
+#define SPAR_TEXT_CUE_INIT(NAME, LINES)		\
+	struct spar_text_cue NAME = {		\
+		.lines = LINES			\
+	}
+
 struct spar_text_cue {
 	size_t lines;
 	size_t error_line;
