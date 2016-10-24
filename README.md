@@ -1,2 +1,2 @@
-# libspar
-A (not very) simple parsing library.
+# libsar
+Grow your parsers 🌺
