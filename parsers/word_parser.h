@@ -3,5 +3,5 @@
  * #include "../core.h"
  */
 
-extern const char spar_type_word[];
-extern struct spar_parser spar_word_parser;
+extern const char sar_type_word[];
+extern struct sar_parser sar_word_parser;

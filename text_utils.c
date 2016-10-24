@@ -4,21 +4,27 @@
 #include "core.h"
 #include "text_utils.h"
 
-char spar_type_end[] = "end";
+char sar_type_end[] = "end";
 
 void
-spar_skip_blank(struct spar_lexinfo *info)
+sar_skip_blank(Sar_lexi *info)
 {
-	for (; isspace(*info->dat.text); ++info->dat.text)
-		if (*info->dat.text == '\n')
-			++info->cue.text->lines;
+	char *str = info->dat;
+
+	for (; isspace(*str); ++str)
+		if (*str == '\n')
+			++SAR_TEXT_CUE(info->cue)->lines;
+
+	info->dat = str;
 }
 
 void
-spar_skip_not_delim(struct spar_lexinfo *info)
+sar_skip_not_delim(Sar_lexi *info)
 {
-	for (;; ++info->dat.text) {
-		switch (*info->dat.text) {
+	char *str = info->dat;
+
+	for (;; ++str) {
+		switch (*str) {
 		case '\n':
 		case ' ':
 		case '\t':
@@ -27,6 +33,7 @@ spar_skip_not_delim(struct spar_lexinfo *info)
 		case '\r':
 		case ';':
 		case '\0':
+			info->dat = str;
 			return;
 		}
 	}

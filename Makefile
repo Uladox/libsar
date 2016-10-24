@@ -2,14 +2,14 @@
 
 include config.mk
 
-SRC = text_utils.c meta.c comb.c cusstrlit.c
+SRC = text_utils.c meta.c comb.c strlit.c
 
 OBJ = $(SRC:.c=.o)
 
 LIB = libspar.a
 
-INC = core.h cases.h meta.h comb.h loop.h text_utils.h token_print.h \
-      cusword.h cusstrlit.h cusnum.h
+INC = core.h cases.h meta.h comb.h text_utils.h token_print.h \
+      word.h num.h
 
 all: $(LIB)
 

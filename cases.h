@@ -1,4 +1,4 @@
-#define SPAR_DIGIT_CASES			\
+#define SAR_DIGIT_CASES			\
 	case '0':				\
 	case '1':				\
 	case '2':				\
@@ -10,7 +10,7 @@
 	case '8':				\
 	case '9'
 
-#define SPAR_WSPACE_CASES			\
+#define SAR_WSPACE_CASES			\
 	case '\n':				\
 	case ' ':				\
 	case '\t':				\
@@ -18,6 +18,6 @@
 	case '\f':				\
 	case '\r'
 
-#define SPAR_SEP_CASES				\
-	SPAR_WSPACE_CASES:			\
+#define SAR_SEP_CASES				\
+	SAR_WSPACE_CASES:			\
 	case ';'

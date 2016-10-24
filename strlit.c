@@ -20,10 +20,10 @@ backslash_curr(char curr)
 }
 
 int
-spar_strlit_str(struct spar_token *token, char **str_ref)
+sar_strlit_str(Sar_token *token, char **str_ref)
 {
 	int backslashed = 0;
-	const char *curr = token->dat.text;
+	const char *curr = token->dat;
 	char *str = malloc(token->data_size);
 	char *begin = str;
 

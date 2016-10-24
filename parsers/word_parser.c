@@ -2,16 +2,18 @@
 
 #include "../core.h"
 #include "../text_utils.h"
-#include "../cusword.h"
+#include "../word.h"
 #include "../cases.h"
 #include "word_parser.h"
 
-const char spar_type_word[] = "word";
+const char sar_type_word[] = "word";
 
-static SPAR_PARSE_FUNC(parse_word)
-{
-        SPAR_BODY_CUSWORD(spar_type_word, SPAR_UNKNOWN_SIZE,
-			  SPAR_SEP_CASES, SPAR_UNKNOWN_SIZE);
-}
+static SAR_PARSE_WORD(parse_word, sar_type_word,
+		      SAR_UNKNOWN_SIZE, SAR_SEP_CASES);
+/* static SAR_PARSE_FUNC(parse_word) */
+/* { */
+/*         SAR_BODY_CUSWORD(sar_type_word, SAR_UNKNOWN_SIZE, */
+/* 			  SAR_SEP_CASES, SAR_UNKNOWN_SIZE); */
+/* } */
 
-SPAR_PARSER_INIT(spar_word_parser, "parse_word", parse_word, NULL);
+SAR_PARSER_INIT(sar_word_parser, "parse_word", parse_word, NULL);

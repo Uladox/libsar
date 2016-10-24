@@ -4,13 +4,13 @@
  */
 
 static inline void
-spar_print_text_token(struct spar_token *token)
+sar_print_text_token(Sar_token *token)
 {
-	fwrite(token->dat.text, token->len, sizeof(char), stdout);
+	fwrite(token->dat, token->len, sizeof(char), stdout);
 }
 
 static inline void
-spar_fprint_text_token(struct spar_token *token, FILE *file)
+sar_fprint_text_token(Sar_token *token, FILE *file)
 {
-	fwrite(token->dat.text, token->len, sizeof(char), file);
+	fwrite(token->dat, token->len, sizeof(char), file);
 }

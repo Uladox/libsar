@@ -3,5 +3,5 @@
  * #include "../core.h"
  */
 
-extern const char spar_type_strlit[];
-extern struct spar_parser spar_strlit_parser;
+extern const char sar_type_strlit[];
+extern struct sar_parser sar_strlit_parser;

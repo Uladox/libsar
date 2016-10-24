@@ -9,33 +9,33 @@
 #include "../parsers/word_parser.h"
 
 int
-str_word_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-	       struct spar_token *token)
+str_word_parse(Sar_parser *parser, Sar_lexi *info,
+	       Sar_token *token)
 {
-	token->type.text = spar_type_parser;
+	token->type = sar_type_parser;
 
-	token->dat.parser = (*info->dat.text == '\"')
-		? &spar_strlit_parser : &spar_word_parser;
+	token->dat = (*SAR_TEXT(info->dat) == '\"')
+		? &sar_strlit_parser : &sar_word_parser;
 
 	return 1;
 }
 
 
-SPAR_PARSER_INIT(word_str_basic, "word_str_basic", str_word_parse, NULL);
+SAR_PARSER_INIT(word_str_basic, "word_str_basic", str_word_parse, NULL);
 
-SPAR_MOD_INIT_META(word_str_parser, &word_str_basic);
+SAR_MOD_INIT_META(word_str_parser, &word_str_basic);
 
 int main(int argc, char *argv[])
 {
-	struct spar_token token;
-	struct spar_text_cue text_cue = {
+	Sar_token token;
+        Sar_text_cue text_cue = {
 		.lines = 0
 	};
 	int parsed;
 
-	struct spar_lexinfo info = {
+	Sar_lexi info = {
 		.error = NULL,
-		.cue.text = &text_cue,
+		.cue = &text_cue,
 		.error_leave = 1,
 	};
 
@@ -45,15 +45,15 @@ int main(int argc, char *argv[])
 	printf("Enter your string or word here: ");
         getline(&buff, &size, stdin);
 
-	info.dat.text = buff;
-	parsed = spar_parse(&word_str_parser, &info, &token);
+	info.dat = buff;
+	parsed = sar_parse(&word_str_parser, &info, &token);
 
 	if (!parsed) {
 		printf("Error: neither a word or a string.\n");
 	} else {
 		printf("parsed \n\t");
-		spar_print_text_token(&token);
-		printf("\nwith type %s.\n", token.type.text);
+		sar_print_text_token(&token);
+		printf("\nwith type %s.\n", token.type);
 	}
 
 	free(buff);

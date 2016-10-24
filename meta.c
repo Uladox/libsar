@@ -2,38 +2,37 @@
 
 #include "core.h"
 
-const char spar_type_parser[] = "parser";
-const char spar_type_meta[] = "meta";
+const char sar_type_parser[] = "parser";
+const char sar_type_meta[] = "meta";
 
 int
-spar_meta_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-		struct spar_token *token)
+sar_meta_parse(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
 {
-	int parsed = spar_parse(parser, info, token);
+	int parsed = sar_parse(parser, info, token);
 
-	if (parsed && token->type.text == spar_type_parser)
-		return spar_parse(token->dat.parser, info, token);
+	if (parsed && token->type == sar_type_parser)
+		return sar_parse(token->dat, info, token);
 
 	return parsed;
 }
 
 
 int
-spar_mod_meta_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		   struct spar_token *token)
+sar_mod_meta_func(Sar_parser *parser, Sar_lexi *info,
+		   Sar_token *token)
 {
-	int parsed = spar_parse(parser->dat.parser, info, token);
+	int parsed = sar_parse(parser->dat, info, token);
 
-	if (parsed && token->type.text == spar_type_parser)
-		return spar_parse(token->dat.parser, info, token);
+	if (parsed && token->type == sar_type_parser)
+		return sar_parse(token->dat, info, token);
 
 	return parsed;
 }
 
 void
-spar_mod_meta(struct spar_parser *to_mod, struct spar_parser *input)
+sar_mod_meta(Sar_parser *to_mod, Sar_parser *input)
 {
-	to_mod->dat.parser = input;
-	to_mod->str_rep = spar_type_meta;
-	to_mod->parse = spar_mod_meta_func;
+	to_mod->dat = input;
+	to_mod->str_rep = sar_type_meta;
+	to_mod->parse = sar_mod_meta_func;
 }

@@ -3,36 +3,34 @@
  * #include "core.h"
  */
 
-#define SPAR_MOD_INIT_META(NAME, DAT)			\
-	struct spar_parser NAME = {			\
-		.dat.parser = DAT,			\
-		.type = SPAR_MODDED,			\
-		.parse = spar_mod_meta_func,		\
-		.str_rep = spar_type_meta,		\
-		.to_free = SPAR_DONT_FREE		\
+#define SAR_MOD_INIT_META(NAME, DAT)			\
+	Sar_parser NAME = {				\
+		.dat = DAT,				\
+		.type = SAR_MODDED,			\
+		.parse = sar_mod_meta_func,		\
+		.str_rep = sar_type_meta,		\
+		.to_free = 0				\
 	}
 
-extern const char spar_type_parser[];
-extern const char spar_type_meta[];
+extern const char sar_type_parser[];
+extern const char sar_type_meta[];
 
 /* For a parser that spits out a parser to parse the data.
  * More useful than you would think in conjunction with a switch statement
  * or jump table.
  */
 int
-spar_meta_parse(struct spar_parser *parser, struct spar_lexinfo *info,
-		struct spar_token *token);
+sar_meta_parse(Sar_parser *parser, Sar_lexi *info, Sar_token *token);
 
 int
-spar_mod_meta_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		   struct spar_token *token);
+sar_mod_meta_func(Sar_parser *parser, Sar_lexi *info, Sar_token *token);
 
 void
-spar_mod_meta(struct spar_parser *to_mod, struct spar_parser *input);
+sar_mod_meta(Sar_parser *to_mod, Sar_parser *input);
 
 void
-spar_token_set_parser(struct spar_token *token, struct spar_parser *parser)
+sar_token_set_parser(Sar_token *token, Sar_parser *parser)
 {
-		token->type.text = spar_type_parser;
-		token->dat.parser = parser;
+		token->type = sar_type_parser;
+		token->dat = parser;
 }

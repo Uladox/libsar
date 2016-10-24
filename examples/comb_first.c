@@ -9,21 +9,21 @@
 #include "../parsers/strlit_parser.h"
 
 
-struct spar_parser_batch word_str_batch = {
+Sar_batch word_str_batch = {
 	.next = NULL,
-	.parsers = (struct spar_parser *[]) {
-		&spar_strlit_parser,
-		&spar_word_parser,
+	.parsers = (Sar_parser *[]) {
+		&sar_strlit_parser,
+		&sar_word_parser,
 		NULL
 	}
 };
 
-SPAR_COMB_INIT_FIRST(word_str_parser, &word_str_batch);
+SAR_COMB_INIT_FIRST(word_str_parser, &word_str_batch);
 
 int main(int argc, char *argv[])
 {
-	struct spar_token token;
-	struct spar_text_cue text_cue = {
+	Sar_token token;
+	Sar_text_cue text_cue = {
 		.lines = 0
 	};
 	int parsed;
@@ -36,20 +36,20 @@ int main(int argc, char *argv[])
 
 	len = getline(&buff, &size, stdin);
 
-	struct spar_lexinfo info = {
-		.dat.text = buff,
-		.cue.text = &text_cue,
+	Sar_lexi info = {
+		.dat = buff,
+		.cue = &text_cue,
 		.error_leave = 1,
 	};
 
-	parsed = spar_parse(&word_str_parser,
+	parsed = sar_parse(&word_str_parser,
 			    &info, &token);
 
 	if (!parsed) {
 		printf("Error: neither a word or a string.\n");
 	} else {
 		printf("parsed \n\t");
-		spar_print_text_token(&token);
+		sar_print_text_token(&token);
 		printf("\nwith type %s.\n", token.type);
 	}
 

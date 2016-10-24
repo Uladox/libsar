@@ -2,14 +2,17 @@
 
 #include "../core.h"
 #include "../text_utils.h"
-#include "../cusstrlit.h"
+#include "../strlit.h"
 #include "strlit_parser.h"
 
-const char spar_type_strlit[] = "strlit";
+const char sar_type_strlit[] = "strlit";
 
-static SPAR_PARSE_FUNC(parse_strlit)
-{
-	SPAR_BODY_CUSSTRLIT(spar_type_strlit, SPAR_UNKNOWN_SIZE);
-}
+static
+SAR_PARSE_STRLIT(parse_strlit, sar_type_strlit);
 
-SPAR_PARSER_INIT(spar_strlit_parser, "parse_strlit", parse_strlit, NULL);
+/* static SAR_PARSE_FUNC(parse_strlit) */
+/* { */
+/* 	SAR_BODY_CUSSTRLIT(sar_type_strlit, SAR_UNKNOWN_SIZE); */
+/* } */
+
+SAR_PARSER_INIT(sar_strlit_parser, "parse_strlit", parse_strlit, NULL);

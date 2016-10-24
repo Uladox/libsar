@@ -3,27 +3,31 @@
  * #include "core.h"
  */
 
-#define SPAR_TEXT_CUE_INIT(NAME, LINES)		\
-	struct spar_text_cue NAME = {		\
+#define SAR_TEXT_CUE_INIT(NAME, LINES)		\
+	struct sar_text_cue NAME = {		\
 		.lines = LINES			\
 	}
+#define SAR_TEXT_CUE(PTR)			\
+	((Sar_text_cue *) (PTR))
 
-struct spar_text_cue {
+typedef struct {
 	size_t lines;
 	size_t error_line;
-};
+} Sar_text_cue;
 
-extern char spar_type_end[];
+extern char sar_type_end[];
 
 static inline void
-spar_text_error(struct spar_lexinfo *info, char *msg, size_t line)
+sar_text_error(Sar_lexi *info, char *msg, size_t line)
 {
-	info->error.text = msg;
-	info->cue.text->error_line = info->cue.text->lines + line;
+	Sar_text_cue *cue = info->cue;
+
+	info->error = msg;
+        cue->error_line = cue->lines + line;
 }
 
 void
-spar_skip_blank(struct spar_lexinfo *info);
+sar_skip_blank(Sar_lexi *info);
 
 void
-spar_skip_not_delim(struct spar_lexinfo *info);
+sar_skip_not_delim(Sar_lexi *info);

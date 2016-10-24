@@ -2,29 +2,28 @@
 #include "core.h"
 #include "comb.h"
 
-const char spar_type_first[] = "first";
-const char spar_type_all[] = "all";
+const char sar_type_first[] = "first";
+const char sar_type_all[] = "all";
 
 void
-spar_comb_add(struct spar_parser *comb, struct spar_parser_batch *batch)
+sar_comb_add(Sar_parser *comb, Sar_batch *batch)
 {
-	struct spar_parser_batch *old_batch = comb->dat.batch;
+	Sar_batch *old_batch = comb->dat;
 
-	(comb->dat.batch = batch)->next = old_batch;
+	SAR_BATCH(comb->dat = batch)->next = old_batch;
 }
 
 int
-spar_comb_first_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		     struct spar_token *token)
+sar_comb_first_func(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
 {
-	struct spar_parser_batch *batch = parser->dat.batch;
-	struct spar_parser **parsers;
+	Sar_batch *batch = parser->dat;
+	Sar_parser **parsers;
 
 	/* Lets hope nobody is stupid enough to use an empty batch. */
 	for (; batch; batch = batch->next)
 	        for (parsers = batch->parsers; *parsers; ++parsers) {
 			/* The memory could be used to collect errors. */
-			if (spar_parse(*parsers, info, token))
+			if (sar_parse(*parsers, info, token))
 				return 1;
 		}
 
@@ -32,19 +31,18 @@ spar_comb_first_func(struct spar_parser *parser, struct spar_lexinfo *info,
 }
 
 void
-spar_comb_first(struct spar_parser *comb)
+sar_comb_first(Sar_parser *comb)
 {
-	comb->parse = spar_comb_first_func;
-	comb->str_rep = spar_type_first;
+	comb->parse = sar_comb_first_func;
+	comb->str_rep = sar_type_first;
 }
 
 int
-spar_comb_all_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		   struct spar_token *token)
+sar_comb_all_func(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
 {
 	int parsed = 0;
-	struct spar_parser_batch *batch = parser->dat.batch;
-	struct spar_parser **parsers;
+	Sar_batch *batch = parser->dat;
+	Sar_parser **parsers;
 
 	/* Lets hope nobody is stupid enough to use an empty batch. */
 	for (; batch; batch = batch->next)
@@ -53,7 +51,7 @@ spar_comb_all_func(struct spar_parser *parser, struct spar_lexinfo *info,
 			 * results, clearly this is somewhat overengineered for
 			 * text, but remember, this is to parse everything!
 			 */
-			if (spar_parse(*parsers, info, token))
+			if (sar_parse(*parsers, info, token))
 				parsed = 1;
 		}
 
@@ -61,8 +59,8 @@ spar_comb_all_func(struct spar_parser *parser, struct spar_lexinfo *info,
 }
 
 void
-spar_comb_all(struct spar_parser *comb)
+sar_comb_all(Sar_parser *comb)
 {
-	comb->parse = spar_comb_all_func;
-	comb->str_rep = spar_type_all;
+	comb->parse = sar_comb_all_func;
+	comb->str_rep = sar_type_all;
 }

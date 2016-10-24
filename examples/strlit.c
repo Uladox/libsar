@@ -8,9 +8,9 @@
 
 int main(int argc, char *argv[])
 {
-	struct spar_token token;
+	Sar_token token;
 	int parsed;
-	struct spar_text_cue text_cue = {
+	Sar_text_cue text_cue = {
 		.lines = 0
 	};
 
@@ -22,19 +22,19 @@ int main(int argc, char *argv[])
 
 	len = getline(&buff, &size, stdin);
 
-	struct spar_lexinfo info = {
-		.dat.text = buff,
-		.cue.text = &text_cue,
+	Sar_lexi info = {
+		.dat = buff,
+		.cue = &text_cue,
 		.error_leave = 1
 	};
 
-	parsed = spar_parse(&spar_strlit_parser, &info, &token);
+	parsed = sar_parse(&sar_strlit_parser, &info, &token);
 
 	if (!parsed) {
-		printf("Error: %s on line %zu.\n", info.error.text,
-		       info.cue.text->error_line);
+		printf("Error: %s on line %zu.\n", info.error,
+		       SAR_TEXT_CUE(info.cue)->error_line);
 	} else {
-		spar_print_text_token(&token);
+		sar_print_text_token(&token);
 		printf("\n");
 	}
 

@@ -3,52 +3,54 @@
  * #include "core.h"
  */
 
-#define SPAR_COMB_INIT_FIRST(NAME, DAT)			\
-	struct spar_parser NAME = {			\
-		.dat.batch = DAT,			\
-		.type = SPAR_COMPOSITE,			\
-		.parse = spar_comb_first_func,		\
-		.str_rep = spar_type_first,		\
-		.to_free = SPAR_DONT_FREE		\
+#define SAR_BATCH(PTR)				\
+	((Sar_batch *) (PTR))
+
+#define SAR_COMB_INIT_FIRST(NAME, DAT)			\
+	Sar_parser NAME = {				\
+		.dat = DAT,			\
+		.type = SAR_COMPOSITE,			\
+		.parse = sar_comb_first_func,		\
+		.str_rep = sar_type_first,		\
+		.to_free = 0				\
 	}
 
-#define SPAR_COMB_INIT_ALL(NAME, DAT)			\
-	struct spar_parser NAME = {			\
-		.dat.batch = DAT,			\
-		.type = SPAR_COMPOSITE,			\
-		.parse = spar_comb_all_func,		\
-		.str_rep = spar_type_all,		\
-		.to_free = SPAR_DONT_FREE		\
+#define SAR_COMB_INIT_ALL(NAME, DAT)			\
+        Sar_parser NAME = {				\
+		.dat = DAT,				\
+		.type = SAR_COMPOSITE,			\
+		.parse = sar_comb_all_func,		\
+		.str_rep = sar_type_all,		\
+		.to_free = 0				\
 	}
 
-extern const char spar_type_first[];
-extern const char spar_type_all[];
+extern const char sar_type_first[];
+extern const char sar_type_all[];
 
 /* A list of parser pointers, duh. */
-struct spar_parser_batch {
-	struct spar_parser_batch *next;
-	struct spar_parser **parsers;
+typedef struct sar_parser_batch Sar_batch;
+struct sar_parser_batch {
+        Sar_batch *next;
+        Sar_parser **parsers;
 };
 
 void
-spar_comb_add(struct spar_parser *comb, struct spar_parser_batch *batch);
+sar_comb_add(Sar_parser *comb, Sar_batch *batch);
 
 int
-spar_comb_first_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		     struct spar_token *token);
+sar_comb_first_func(Sar_parser *parser, Sar_lexi *info, Sar_token *token);
 
 void
-spar_comb_first(struct spar_parser *comb);
+sar_comb_first(Sar_parser *comb);
 
 int
-spar_comb_all_func(struct spar_parser *parser, struct spar_lexinfo *info,
-		   struct spar_token *token);
+sar_comb_all_func(Sar_parser *parser, Sar_lexi *info, Sar_token *token);
 
 void
-spar_comb_all(struct spar_parser *comb);
+sar_comb_all(Sar_parser *comb);
 
 static inline void
-spar_comb_init(struct spar_parser *comb)
+sar_comb_init(Sar_parser *comb)
 {
-	comb->type = SPAR_COMPOSITE;
+	comb->type = SAR_COMPOSITE;
 }
