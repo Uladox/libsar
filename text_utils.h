@@ -10,21 +10,17 @@
 #define SAR_TEXT_CUE(PTR)			\
 	((Sar_text_cue *) (PTR))
 
+#define SAR_ADD_DIF(CURR, DAT)			\
+	(CURR - SAR_TEXT(DAT))
+
+#define SAR_ADD_LINES(CUE, LINE)		\
+	(SAR_TEXT_CUE(CUE)->lines += LINE)
+
 typedef struct {
 	size_t lines;
-	size_t error_line;
 } Sar_text_cue;
 
 extern char sar_type_end[];
-
-static inline void
-sar_text_error(Sar_lexi *info, char *msg, size_t line)
-{
-	Sar_text_cue *cue = info->cue;
-
-	info->error = msg;
-        cue->error_line = cue->lines + line;
-}
 
 void
 sar_skip_blank(Sar_lexi *info);

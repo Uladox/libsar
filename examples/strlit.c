@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
 	if (!parsed) {
 		printf("Error: %s on line %zu.\n", info.error,
-		       SAR_TEXT_CUE(info.cue)->error_line);
+		       SAR_TEXT_CUE(info.cue)->lines);
 	} else {
 		sar_print_text_token(&token);
 		printf("\n");

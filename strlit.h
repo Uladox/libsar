@@ -4,7 +4,7 @@
  * #include "text_utils.h"
  */
 
-#define SAR_PARSE_STRLIT(FUNC_NAME, TYPE)				\
+#define SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, VAL, INC, DIF, LINE)		\
 	SAR_PARSE_FUNC(FUNC_NAME)					\
 	{								\
 		int parsed = 1;						\
@@ -18,26 +18,23 @@
 		token->dat = curr;					\
 		token->type = TYPE;					\
 									\
-		if (*curr != '\"') {					\
-			sar_text_error(info,				\
-				       "string has no start quote", 0);	\
+		if (VAL(curr) != '\"') {					\
+		        info->error = "string has no start quote";	\
 									\
-			if (info->error_leave || *curr == '\0')		\
+			if (info->error_leave || VAL(curr) == '\0')	\
 				return 0;				\
 									\
 			parsed = 0;					\
 		}							\
 									\
 		while (1) {						\
-			switch (*++curr) {				\
+			switch (VAL(INC(curr))) {			\
 			case '\0':					\
-				sar_text_error(info,			\
-					       "string has no ending"	\
-					       "quote",			\
-					       line);			\
+				info->error = "string has no ending"	\
+					"quote";			\
 									\
-				token->len = curr - SAR_TEXT(token->dat); \
-				SAR_TEXT_CUE(info->cue)->lines += line;	\
+				token->len = DIF(curr, token->dat);	\
+			        LINE(info->cue, line);			\
 				return 0;				\
 			case '\\':					\
 				if (backslashed)			\
@@ -52,10 +49,10 @@
 					break;				\
 				}					\
 									\
-				++curr;					\
+				INC(curr);				\
 									\
-				token->len = curr - SAR_TEXT(token->dat); \
-				SAR_TEXT_CUE(info->cue)->lines += line;	\
+				token->len = DIF(curr, token->dat);	\
+				LINE(info->cue, line);			\
 				return parsed;				\
 			case '\n':					\
 				++line;					\
@@ -67,6 +64,10 @@
 		}							\
 	}								\
 	SAR_PARSE_FUNC(FUNC_NAME)
+
+
+#define SAR_PARSE_STRLIT(FUNC_NAME, TYPE)				\
+	SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, *, ++, SAR_ADD_DIF, SAR_ADD_LINES)
 
 int
 sar_strlit_str(Sar_token *token, char **str_ref);

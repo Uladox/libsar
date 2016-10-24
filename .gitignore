@@ -31,3 +31,7 @@
 # Debug files
 *.dSYM/
 *.su
+/examples/comb_first
+/examples/meta_test
+/examples/strlit
+/examples/word

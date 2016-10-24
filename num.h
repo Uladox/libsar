@@ -5,9 +5,9 @@
  * #include "text_utils.h"
  */
 
-#define SAR_PARSE_NUM(FUNC_NAME, WHOLE_TYPE, WHOLE_SIZE,		\
-		      DECIMAL_TYPE, DECIMAL_SIZE,			\
-		      END_CASES)					\
+#define SAR_PARSE_NUM0(FUNC_NAME, WHOLE_TYPE, WHOLE_SIZE,		\
+		       DECIMAL_TYPE, DECIMAL_SIZE, END_CASES,		\
+		       VAL, INC, DIF)					\
 	SAR_PARSE_FUNC(FUNC_NAME)					\
 	{								\
 		int parsed = 1;						\
@@ -20,18 +20,17 @@
 		token->type = WHOLE_TYPE;				\
 		token->data_size = WHOLE_SIZE;				\
 									\
-		switch (*curr) {					\
+		switch (VAL(curr)) {					\
 		SAR_DIGIT_CASES:					\
 			break;						\
 		default:						\
-			sar_text_error(info,				\
-				       "number does not"		\
-				       "start with digit", 0);		\
+			info->error = "number does not start with "	\
+				"digit";				\
 			return 0;					\
 		}							\
 									\
-		for (;; ++curr) {					\
-			switch (*curr) {				\
+		for (;; INC(curr)) {					\
+			switch (VAL(curr)) {				\
 			SAR_DIGIT_CASES:				\
 				continue;				\
 			END_CASES:					\
@@ -46,16 +45,13 @@
 					break;				\
 				}					\
 									\
-				info->error =				\
-					"too many decimal "		\
+				info->error = "too many decimal "	\
 					"points in number";		\
 				goto error;				\
 			default:					\
 				info->error = "invalid character"	\
 					"in number";			\
 			error:						\
-				SAR_TEXT_CUE(info->cue)->error_line =	\
-					SAR_TEXT_CUE(info->cue)->lines;	\
 									\
 				if (info->error_leave)			\
 					return 0;			\
@@ -69,3 +65,10 @@
 		}							\
 	}								\
 	SAR_PARSE_FUNC(FUNC_NAME)
+
+#define SAR_PARSE_NUM(FUNC_NAME, WHOLE_TYPE, WHOLE_SIZE,		\
+		      DECIMAL_TYPE, DECIMAL_SIZE, END_CASES)		\
+	SAR_PARSE_NUM0(FUNC_NAME, WHOLE_TYPE, WHOLE_SIZE,		\
+		       DECIMAL_TYPE, DECIMAL_SIZE, END_CASES,		\
+		       *, ++, SAR_ADD_DIF)
+
