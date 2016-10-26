@@ -5,6 +5,8 @@
 #define SAR_TEXT(PTR)				\
 	((char *) (PTR))
 
+#define SAR_IDENT(I) I
+
 #define SAR_UNKNOWN_SIZE -1
 #define SAR_SIZE_UNKNOWN(SIZE)			\
 	((SIZE) < 0)

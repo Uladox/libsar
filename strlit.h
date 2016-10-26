@@ -4,13 +4,16 @@
  * #include "text_utils.h"
  */
 
-#define SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, VAL, INC, DIF, LINE)		\
+#define SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, VAL, VAL_TYPE, VAL_INIT,	\
+			  INC, DIF, LINE)				\
 	SAR_PARSE_FUNC(FUNC_NAME)					\
 	{								\
 		int parsed = 1;						\
 		int backslashed = 0;					\
 		size_t line = 0;					\
-		char *curr = info->dat;					\
+	        VAL_TYPE curr;						\
+									\
+		VAL_INIT(curr, info->dat);				\
 									\
 		(void) parser;						\
 									\
@@ -28,7 +31,8 @@
 		}							\
 									\
 		while (1) {						\
-			switch (VAL(INC(curr))) {			\
+			INC(curr);					\
+			switch (VAL(curr)) {				\
 			case '\0':					\
 				info->error = "string has no ending"	\
 					"quote";			\
@@ -67,7 +71,8 @@
 
 
 #define SAR_PARSE_STRLIT(FUNC_NAME, TYPE)				\
-	SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, *, ++, SAR_ADD_DIF, SAR_ADD_LINES)
+	SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, *, char *, SAR_IDENT,	\
+			  ++, SAR_ADD_DIF, SAR_ADD_LINES)
 
 int
 sar_strlit_str(Sar_token *token, char **str_ref);

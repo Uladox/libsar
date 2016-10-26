@@ -7,11 +7,11 @@
 
 #define SAR_PARSE_NUM0(FUNC_NAME, WHOLE_TYPE, WHOLE_SIZE,		\
 		       DECIMAL_TYPE, DECIMAL_SIZE, END_CASES,		\
-		       VAL, INC, DIF)					\
+		       VAL, VAL_TYPE, VAL_INIT, INC, DIF)		\
 	SAR_PARSE_FUNC(FUNC_NAME)					\
 	{								\
 		int parsed = 1;						\
-		char *curr = info->dat;					\
+	        VAL_TYPE curr = VAL_INIT(info->dat);			\
 		int period = 0;						\
 									\
 		(void) parser;						\
@@ -70,5 +70,5 @@
 		      DECIMAL_TYPE, DECIMAL_SIZE, END_CASES)		\
 	SAR_PARSE_NUM0(FUNC_NAME, WHOLE_TYPE, WHOLE_SIZE,		\
 		       DECIMAL_TYPE, DECIMAL_SIZE, END_CASES,		\
-		       *, ++, SAR_ADD_DIF)
+		       *, char *, SAR_IDENT, ++, SAR_ADD_DIF)
 

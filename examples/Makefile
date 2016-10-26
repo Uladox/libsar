@@ -1,5 +1,5 @@
-EXEC := word strlit comb_first meta_test
-SRC := word.c strlit.c comb_first.c meta_test.c
+EXEC := word strlit comb_first meta_test befunge
+SRC := word.c strlit.c comb_first.c meta_test.c befunge.c
 OBJ := $(SRC:.c=.o)
 
 # Stops make from acting stupid
@@ -7,7 +7,7 @@ OBJ := $(SRC:.c=.o)
 .PRECIOUS: %.o
 .PHONY: all clean
 
-all: word strlit comb_first meta_test
+all: $(EXEC)
 
 %.o: %.c
 	@gcc -g -c $<

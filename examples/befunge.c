@@ -4,9 +4,9 @@
 #include "../core.h"
 #include "../text_utils.h"
 #include "../token_print.h"
+#include "../strlit.h"
 
 #define BEFUN_FIELD(PTR) ((Field *) (PTR))
-#define BEFUN_VAL(FIELD) (field_val(BEFUN_FIELD(FIELD)))
 #define NOTHING2(X, Y)
 
 
@@ -21,6 +21,15 @@ enum befun_dir {
 };
 
 typedef struct {
+	int x, y;
+} Pos;
+
+typedef union {
+	int num;
+	char *str;
+} Stack_dat;
+
+typedef struct {
 	enum befun_dir dir;
 	int x, y, max_x, max_y;
 	char **dat;
@@ -29,62 +38,94 @@ typedef struct {
 const char befun_com[] = "com";
 const char befun_str[] = "str";
 
-int stack[1024];
+Stack_dat stack[1024];
 
 char f_dat[MAX_Y][MAX_X] = {
 	{'>', 'v'},
 	{'^', '<'}
 };
 
-static inline char
+/* size_t */
+/* field_dif() */
+/* { */
+
+/* } */
+
+static inline Field *
+field_inc(Field *f)
+{
+	switch (f->dir) {
+	case BEFUN_UP:
+		if (f->y - 1 < 0)
+			return NULL;
+
+		--f->y;
+		break;
+	case BEFUN_DOWN:
+		if (f->y + 1 >= f->max_y)
+			return NULL;
+
+		++f->y;
+		break;
+	case BEFUN_LEFT:
+		if (f->x - 1 < 0)
+			return NULL;
+
+		--f->x;
+		break;
+	case BEFUN_RIGHT:
+		if (f->x + 1 >= f->max_x)
+			return NULL;
+
+		++f->x;
+		break;
+	}
+
+	return f;
+}
+
+char
 field_val(Field *f)
 {
 	return f->dat[f->y][f->x];
 }
 
-size_t
-field_dif(
-
-static inline int
-field_next(Field *f, char *val)
+Field *
+field_init(Field *f)
 {
-	switch (f->dir) {
-	case BEFUN_UP:
-		if (f->y - 1 < 0)
-			return 0;
+	Field *f2 = malloc(sizeof(*f2));
 
-		*val = f->dat[--f->y][f->x];
-		break;
-	case BEFUN_DOWN:
-		if (f->y + 1 >= f->max_y)
-			return 0;
+        if (!f2)
+		return NULL;
 
-		*val = f->dat[++f->y][f->x];
-		break;
-	case BEFUN_LEFT:
-		if (f->x - 1 < 0)
-			return 0;
+	f2->dir = f->dir;
+	f2->x = f->x;
+	f2->y = f->y;
+	f2->max_x = f->max_x;
+	f2->max_y = f->max_y;
+	f2->dat = f->dat;
 
-		*val = f->dat[f->y][--f->x];
-		break;
-	case BEFUN_RIGHT:
-		if (f->x + 1 >= f->max_x)
-			return 0;
-
-		*val = f->dat[f->y][++f->x];
-		break;
-	}
-
-	return 1;
+	return f2;
 }
 
 int
-dat_next(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
+field_dif(Field *curr, Field *dat)
 {
-	return field_next(info->dat, info->cue, info->mem, );
+	if (curr->x != dat->x) {
+		return curr->x - dat->x;
+	}
+
+	return curr->y - dat->y;
 }
 
-SAR_PARSE_STRLIT0(str_parse, befun_str, , NOTHING2);
+#define BEFUN_VAL(VAL) field_val(VAL)
+#define BEFUN_VAL_INIT(CURR, DAT)				\
+	SAR_TEXT_ERROR((CURR = field_init(DAT)), "could not init")
+#define BEFUN_INC(CURR) SAR_TEXT_ERROR(field_inc(CURR), "could not inc field")
+#define BEFUN_DIF(CURR, DAT) field_dif(CURR, DAT)
+
+SAR_PARSE_STRLIT0(str_parse, befun_str, BEFUN_VAL, Field *,
+		  BEFUN_VAL_INIT, BEFUN_INC, BEFUN_DIF, NOTHING2);
 
 
 
@@ -96,11 +137,11 @@ main(int argc, char *argv[])
 	Field field = {
 		.max_x = MAX_X,
 		.max_y = MAX_Y,
-		.dat = f_dat
+		.dat = (char **) f_dat
 	};
 
 	Sar_lexi info = {
-		.dat = field,
+		.dat = &field,
 		.error_leave = 1
 	};
 

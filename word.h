@@ -4,10 +4,11 @@
  * #include "text_utils.h"
  */
 
-#define SAR_PARSE_WORD0(FUNC_NAME, TYPE, DAT_SIZE, END_CASES, VAL, INC, DIF) \
+#define SAR_PARSE_WORD0(FUNC_NAME, TYPE, DAT_SIZE, END_CASES,		\
+			VAL, VAL_TYPE, VAL_INIT, INC, DIF)		\
 	SAR_PARSE_FUNC(FUNC_NAME)					\
 	{								\
-		char *curr = info->dat;					\
+		VAL_TYPE curr = VAL_INIT(info->dat);			\
 									\
 		(void) parser;						\
 									\
@@ -38,4 +39,4 @@
 
 #define SAR_PARSE_WORD(FUNC_NAME, TYPE, DAT_SIZE, END_CASES)		\
 	SAR_PARSE_WORD0(FUNC_NAME, TYPE, DAT_SIZE, END_CASES,		\
-			*, ++, SAR_ADD_DIF)
+			*, char *, SAR_IDENT, ++, SAR_ADD_DIF)
