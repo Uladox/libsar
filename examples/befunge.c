@@ -32,7 +32,7 @@ typedef union {
 typedef struct {
 	enum befun_dir dir;
 	int x, y, max_x, max_y;
-	char **dat;
+	char (*dat)[MAX_X];
 } Field;
 
 const char befun_com[] = "com";
@@ -41,15 +41,10 @@ const char befun_str[] = "str";
 Stack_dat stack[1024];
 
 char f_dat[MAX_Y][MAX_X] = {
-	{'>', 'v'},
+	{ '"', 'h', 'e', 'l', 'l', 'o', '"' },
 	{'^', '<'}
 };
 
-/* size_t */
-/* field_dif() */
-/* { */
-
-/* } */
 
 static inline Field *
 field_inc(Field *f)
@@ -111,6 +106,8 @@ field_init(Field *f)
 int
 field_dif(Field *curr, Field *dat)
 {
+	/* if (curr == dat) */
+	/* 	printf("curr %i, dat %i\n", curr->x, dat->x); */
 	if (curr->x != dat->x) {
 		return curr->x - dat->x;
 	}
@@ -124,10 +121,40 @@ field_dif(Field *curr, Field *dat)
 #define BEFUN_INC(CURR) SAR_TEXT_ERROR(field_inc(CURR), "could not inc field")
 #define BEFUN_DIF(CURR, DAT) field_dif(CURR, DAT)
 
-SAR_PARSE_STRLIT0(str_parse, befun_str, BEFUN_VAL, Field *,
+SAR_PARSE_STRLIT0(parse_strlit, befun_str, BEFUN_VAL, Field *,
 		  BEFUN_VAL_INIT, BEFUN_INC, BEFUN_DIF, NOTHING2);
 
+SAR_PARSER_INIT(strlit_parser, "parse_strlit", parse_strlit, NULL);
 
+void
+befun_print_token(Sar_token *token)
+{
+	Field *f = token->dat;
+	size_t len = token->len;
+	size_t count = 0;
+
+	printf("%zu\n", len);
+
+	switch (f->dir) {
+	case BEFUN_UP:
+		for (; count < len; ++count)
+			putchar(f->dat[f->y - count][f->x]);
+		break;
+	case BEFUN_DOWN:
+		for (; count < len; ++count)
+			putchar(f->dat[f->y + count][f->x]);
+		break;
+	case BEFUN_LEFT:
+		for (; count < len; ++count)
+			putchar(f->dat[f->y][f->x - count]);
+		break;
+	case BEFUN_RIGHT:
+		for (; count < len; ++count)
+			putchar(f->dat[f->y][f->x + count]);
+		break;
+
+	}
+}
 
 int
 main(int argc, char *argv[])
@@ -135,14 +162,28 @@ main(int argc, char *argv[])
 	Sar_token token;
 
 	Field field = {
+		.dir = BEFUN_RIGHT,
 		.max_x = MAX_X,
 		.max_y = MAX_Y,
-		.dat = (char **) f_dat
+		.x = 0,
+		.y = 0,
+		.dat = f_dat
 	};
 
 	Sar_lexi info = {
 		.dat = &field,
 		.error_leave = 1
 	};
+
+	int parsed = sar_parse(&strlit_parser, &info, &token);
+
+	if (!parsed) {
+		printf("Error: %s\n", info.error);
+		/* printf("Error: %s on x = %i, y = %i.\n", info.error, */
+		/*        SAR_TEXT_CUE(info.cue)->lines); */
+	} else {
+	        befun_print_token(&token);
+		printf("\n");
+	}
 
 }

@@ -18,7 +18,7 @@
 		(void) parser;						\
 									\
 		token->data_size = 1;					\
-		token->dat = curr;					\
+		token->dat = info->dat;					\
 		token->type = TYPE;					\
 									\
 		if (VAL(curr) != '\"') {					\
@@ -71,7 +71,7 @@
 
 
 #define SAR_PARSE_STRLIT(FUNC_NAME, TYPE)				\
-	SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, *, char *, SAR_IDENT,	\
+	SAR_PARSE_STRLIT0(FUNC_NAME, TYPE, *, char *, SAR_EQUAL,	\
 			  ++, SAR_ADD_DIF, SAR_ADD_LINES)
 
 int

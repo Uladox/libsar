@@ -17,7 +17,7 @@
 	(SAR_TEXT_CUE(CUE)->lines += LINE)
 
 #define SAR_TEXT_ERROR(EXPR, STR)				\
-	do { if (EXPR) { info->error = (STR); return 0; } } while (0)
+	do { if (!EXPR) { info->error = (STR); return 0; } } while (0)
 
 typedef struct {
 	size_t lines;

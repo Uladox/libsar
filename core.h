@@ -6,6 +6,7 @@
 	((char *) (PTR))
 
 #define SAR_IDENT(I) I
+#define SAR_EQUAL(X, Y) (X = Y)
 
 #define SAR_UNKNOWN_SIZE -1
 #define SAR_SIZE_UNKNOWN(SIZE)			\
