@@ -51,28 +51,24 @@ field_inc(Field *f)
 {
 	switch (f->dir) {
 	case BEFUN_UP:
-		if (f->y - 1 < 0)
+		if (f->y-- - 1 < 0)
 			return NULL;
 
-		--f->y;
 		break;
 	case BEFUN_DOWN:
-		if (f->y + 1 >= f->max_y)
+		if (f->y++ + 1 >= f->max_y)
 			return NULL;
 
-		++f->y;
 		break;
 	case BEFUN_LEFT:
-		if (f->x - 1 < 0)
+		if (f->x-- - 1 < 0)
 			return NULL;
 
-		--f->x;
 		break;
 	case BEFUN_RIGHT:
-		if (f->x + 1 >= f->max_x)
+		if (f->x++ + 1 >= f->max_x)
 			return NULL;
 
-		++f->x;
 		break;
 	}
 

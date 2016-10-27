@@ -14,18 +14,14 @@ sar_comb_add(Sar_parser *comb, Sar_batch *batch)
 }
 
 int
-sar_comb_first_func(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
+sar_prim_comb_first(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
 {
 	Sar_batch *batch = parser->dat;
-	Sar_parser **parsers;
+	Sar_parser **parsers = batch->val.parsers;
 
-	/* Lets hope nobody is stupid enough to use an empty batch. */
-	for (; batch; batch = batch->next)
-	        for (parsers = batch->parsers; *parsers; ++parsers) {
-			/* The memory could be used to collect errors. */
-			if (sar_parse(*parsers, info, token))
+	for (; *parsers; ++parsers)
+		if (sar_parse(*parsers, info, token))
 				return 1;
-		}
 
 	return 0;
 }
@@ -38,22 +34,15 @@ sar_comb_first(Sar_parser *comb)
 }
 
 int
-sar_comb_all_func(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
+sar_prim_comb_all(Sar_parser *parser, Sar_lexi *info, Sar_token *token)
 {
 	int parsed = 0;
 	Sar_batch *batch = parser->dat;
-	Sar_parser **parsers;
+	Sar_parser **parsers = batch->val.parsers;
 
-	/* Lets hope nobody is stupid enough to use an empty batch. */
-	for (; batch; batch = batch->next)
-	        for (parsers = batch->parsers; *parsers; ++parsers) {
-			/* The memory could be used to collect errors and
-			 * results, clearly this is somewhat overengineered for
-			 * text, but remember, this is to parse everything!
-			 */
+	for (parsers = batch->parsers; *parsers; ++parsers)
 			if (sar_parse(*parsers, info, token))
 				parsed = 1;
-		}
 
 	return parsed;
 }

@@ -6,20 +6,23 @@
 #define SAR_BATCH(PTR)				\
 	((Sar_batch *) (PTR))
 
-#define SAR_COMB_INIT_FIRST(NAME, DAT)			\
+#define SAR_COMB_INIT_FIRST(NAME, ...)			\
 	Sar_parser NAME = {				\
 		.dat = DAT,			\
 		.type = SAR_COMPOSITE,			\
-		.parse = sar_comb_first_func,		\
+		.parse = sar_prim_comb_first,		\
 		.str_rep = sar_type_first,		\
 		.to_free = 0				\
 	}
 
-#define SAR_COMB_INIT_ALL(NAME, DAT)			\
+#define SAR_COMB_INIT_ALL(NAME, ...)			\
         Sar_parser NAME = {				\
-		.dat = DAT,				\
+		.dat = &(Sar_batch) {			\
+			.prim = 1,			\
+
+		},					\
 		.type = SAR_COMPOSITE,			\
-		.parse = sar_comb_all_func,		\
+		.parse = sar_prim_comb_all,		\
 		.str_rep = sar_type_all,		\
 		.to_free = 0				\
 	}
@@ -27,11 +30,22 @@
 extern const char sar_type_first[];
 extern const char sar_type_all[];
 
+typedef sar_parser_list Sar_parser_list;
+
+struct sar_parser_list {
+	Sar_parser_list *next;
+	Sar_parser *parser;
+};
+
 /* A list of parser pointers, duh. */
 typedef struct sar_parser_batch Sar_batch;
 struct sar_parser_batch {
-        Sar_batch *next;
-        Sar_parser **parsers;
+	union {
+	        Sar_parser_list *list;
+		Sar_parser **parsers;
+	} val;
+
+	int prim;
 };
 
 void
